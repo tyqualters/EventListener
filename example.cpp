@@ -4,19 +4,15 @@
 
 int main()
 {
-    CreateEventListener(nullptr, "Test", new EventFunction([](SEvent event){
+    CreateEventListener(nullptr, "Example", new EventFunction<int, const char*>([&](SEvent event, int a, const char* b){
         static int id = 0;
-        std::cout << "Test " << ++id << std::endl;
+        std::cout << "Round " << ++id << ' ' << a << ' ' << b << std::endl;
 
     }));
 
-    PushEvent("Test");
-    PushEvent("Test");
-    PushEvent("Test");
-    PushEvent("Test");
-    PushEvent("Test");
-    PushEvent("Test");
-    PushEvent("Test");
-    PushEvent("Test");
-    PushEvent("Test");
+    // Example pushing an event with no address, int and string
+    PushEvent("Example", 50, "Test 1");
+
+    // Example pushing an event with an address, int and string
+    PushEvent(0, "Example", 51, std::string("Test 2"));
 }
