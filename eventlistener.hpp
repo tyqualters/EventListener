@@ -54,6 +54,15 @@ namespace EventListener
     std::vector<SListener> g_events{};
     std::mutex g_events_mutex;
 
+    template<class T>
+    void filterVec(std::vector<T>& vec, std::function<bool(T&)> f)
+    {
+        std::vector<T> _vec = {};
+        for(auto& item : vec)
+            if(f(item)) _vec.push_back(item);
+        vec = _vec;
+    }
+
     template <typename... arguments>
     void CallEvent(void *objAddress, const char *eventName, arguments... args)
     {
@@ -87,18 +96,17 @@ namespace EventListener
         int count = 0;
         const std::lock_guard<std::mutex> lock(g_events_mutex);
         EventListenerLog("Scanning listeners.");
-        std::vector<SListener>::iterator it;
-        it = std::remove_if(g_events.begin(), g_events.end(), [&count, &id](SListener &listener) -> bool
+        filterVec<SListener>(g_events, [&count, &id](SListener &listener) -> bool
             {
                 EventListenerLog("Checking listener.");
                 if (listener.id == id)
                 {
                     EventListenerLog("Deleting listener.");
                     ++count;
-                    return true;
+                    return false;
                 }
                 else
-                    return false;
+                    return true;
             });
         return count;
     }
@@ -108,18 +116,17 @@ namespace EventListener
         int count = 0;
         const std::lock_guard<std::mutex> lock(g_events_mutex);
         EventListenerLog("Scanning listeners.");
-        std::vector<SListener>::iterator it;
-        it = std::remove_if(g_events.begin(), g_events.end(), [&objAddress, &count](SListener &listener) -> bool
+        filterVec<SListener>(g_events, [&objAddress, &count](SListener &listener) -> bool
             {
                 EventListenerLog("Checking listener.");
                 if (listener.address == objAddress)
                 {
                     EventListenerLog("Deleting listener.");
-                    return true;
+                    return false;
                     ++count;
                 }
                 else
-                    return false;
+                    return true;
             });
         return count;
     }
@@ -129,18 +136,17 @@ namespace EventListener
         int count = 0;
         const std::lock_guard<std::mutex> lock(g_events_mutex);
         EventListenerLog("Scanning listeners.");
-        std::vector<SListener>::iterator it;
-        it = std::remove_if(g_events.begin(), g_events.end(), [&eventName, &count](SListener &listener) -> bool
+        filterVec<SListener>(g_events, [&eventName, &count](SListener &listener) -> bool
             {
                 EventListenerLog("Checking listener.");
                 if (listener.name == eventName)
                 {
                     EventListenerLog("Deleting listener.");
-                    return true;
+                    return false;
                     ++count;
                 }
                 else
-                    return false;
+                    return true;
             });
         return count;
     }
