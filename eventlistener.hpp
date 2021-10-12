@@ -2,7 +2,7 @@
  * @file eventlistener.hpp
  * @author Ty Qualters (contact@tyqualters.com)
  * @brief A simple multi-threaded event listener in C++.
- * @version 0.1
+ * @version 0.2
  * @date 2021-10-11
  * 
  * @copyright Copyright (c) 2021
@@ -67,7 +67,6 @@ namespace EventListener
      */
     void CallEvent(void *objAddress, const char *eventName)
     {
-        const std::lock_guard<std::mutex> lock(g_events_mutex);
         for (auto &event : g_events)
         {
             if (event.address == objAddress && eventName)
