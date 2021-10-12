@@ -37,7 +37,7 @@ This will take the event name associated with all event listeners (ref. `CreateE
 
 ## EventFunction
 #### using EventFunction = std::function<void(SEvent, arguments...)>;
-This is just essentially a typedef for a function meant to be used for an event. In other words, it's simply a cast to make life easier (ref. `CreateEventListener`).
+This is just essentially a `typedef` for a function meant to be used for an event. In other words, it's simply a cast to make life easier (ref. `CreateEventListener`).
 
 ## PushEvent (1/2)
 #### int PushEvent(void *objAddress, const char *eventName, Args... args)
@@ -66,10 +66,13 @@ These are not and will not be documented but are pretty self-explanatory. They a
 
 Important note #1: The functions will not delete themselves. Shouldn't be a problem unless you're automatically generating functions to create events.
 
-Important note #2: There will not be an error thrown for invalid events. What will happen is PushEvent will return 0 if no listener fit the criteria.
+Important note #2: There will not be an error thrown for invalid events. What will happen is `PushEvent` will return `0` if no listener fit the criteria.
 
-Important note #3: Listener events that throw an exception will be caught and ignored unless \_\_DEBUG flag is defined. If using CLang or GCC you can compile like so:
+Important note #3: Listener events that throw an exception will be caught and ignored unless `__DEBUG` flag is defined. If using CLang or GCC you can compile like so:
 
 `g++ example.cpp -o example -D __DEBUG`
 
 `clang++ example.cpp -o example -D __DEBUG`
+
+# Special Thanks
+Thank you zero9178#6333 for helping me with figuring out the template issues with this project!
